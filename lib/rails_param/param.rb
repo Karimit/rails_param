@@ -25,7 +25,7 @@ module RailsParam
       return unless params.include?(name) || check_param_presence?(options[:default]) || options[:required]
 
       begin
-        params[name] = coerce(params[name], type, options)
+        params[name] = coerce(name, params[name], type, options)
 
         # set default
         if options[:default].respond_to?(:call)
@@ -95,7 +95,7 @@ module RailsParam
       yield(controller, index)
     end
 
-    def coerce(param, type, options = {})
+    def coerce(name, param, type, options = {})
       begin
         return nil if param.nil?
         return param if (param.is_a?(type) rescue false)
@@ -127,7 +127,7 @@ module RailsParam
         end
         return nil
       rescue ArgumentError
-        raise InvalidParameterError, "'#{param}' is not a valid #{type}"
+        raise InvalidParameterError, "'#{param}' is not a valid #{type} for parameter '#{name}'"
       end
     end
 
