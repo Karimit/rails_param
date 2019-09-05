@@ -125,6 +125,13 @@ module RailsParam
           param = param.delete('$,').strip.to_f if param.is_a?(String)
           return BigDecimal.new(param, (options[:precision] || DEFAULT_PRECISION))
         end
+        if type == :phone
+          if (phone = Phonelib.parse(param) && phone.valid?)
+            return phone.to_s
+          else
+            raise ArgumentError
+          end
+        end
         return nil
       rescue ArgumentError
         raise InvalidParameterError, "'#{param}' is not a valid #{type} for parameter '#{name}'"
