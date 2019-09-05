@@ -129,7 +129,6 @@ module RailsParam
           return phone.to_s if (phone = Phonelib.parse(param)) && phone.valid?
 
           raise ArgumentError
-          end
         end
         return nil
       rescue ArgumentError
