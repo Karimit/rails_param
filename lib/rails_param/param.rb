@@ -126,10 +126,9 @@ module RailsParam
           return BigDecimal.new(param, (options[:precision] || DEFAULT_PRECISION))
         end
         if type == :phone
-          if (phone = Phonelib.parse(param) && phone.valid?)
-            return phone.to_s
-          else
-            raise ArgumentError
+          return phone.to_s if (phone = Phonelib.parse(param)) && phone.valid?
+
+          raise ArgumentError
           end
         end
         return nil
